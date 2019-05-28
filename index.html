@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>MEC platform service catalogue</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link href="http://netdna.bootstrapcdn.com/twitter-bootstrap/2.3.2/css/bootstrap-combined.min.css" rel="stylesheet">
+<script
+			  src="https://code.jquery.com/jquery-3.3.1.min.js"
+			  integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8="
+			  crossorigin="anonymous"></script>
+<script src="http://netdna.bootstrapcdn.com/twitter-bootstrap/2.3.2/js/bootstrap.min.js"></script>
+<script src="http://ajax.aspnetcdn.com/ajax/knockout/knockout-2.2.1.js"></script>
+<script type="text/javascript" src="registry.js" defer="defer">
+</script>
+
+</head>
+<body>
+    <div class="navbar">
+        <div class="navbar-inner">
+            <a class="brand" href="#">MEC platform services</a>
+        </div>
+    </div>
+    <div id="main" class="container">
+        <table class="table table-striped">
+            <tr>
+              <td><b>Name</b></td>
+              <td><b>Endpoint</b></td>
+              <td><b>Parameters</b></td>
+              <td></td>
+            </tr>
+            <!-- ko foreach: services -->
+            <tr>
+                <td><b data-bind="text: name"></b></td>
+                <td><p><b data-bind="text: url"></b></p><p data-bind="text: description"></p></td>
+                <td><b data-bind="text: parameters"></b></td>
+                <td><button type="button" class="btn btn-success" data-bind="click: $parent.beginExecute">Execute</button></td>
+            </tr>
+            <!-- /ko -->
+        </table>
+    </div>
+
+<div id="execute" class="modal hide fade" tabindex="=1" role="dialog" aria-labelledby="executeDialogLabel" aria-hidden="true" data-bind="with: selectedService">
+    <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">X</button>
+        <h3 id="addDialogLabel" data-bind="text: name"></h3>
+        <span data-bind="text: description"></span>
+    </div>
+    <div class="modal-body">
+        <table class="table table-striped" >
+        <tbody data-bind="foreach: parameters">
+          <tr>
+              <td><b data-bind="text: $data"></b></td>
+              <td><input data-bind="value: $root.requestParams[$data], attr: {placeholder: $root.requestParamTypes[$data]}"></b></td>
+          </tr>
+        </tbody>
+        </table>
+        
+        <div>
+        <select data-bind="options: method, value: $parent.selectedMethod"></select>
+        </div>
+        <div id="resultSuccess" class="hide alert alert-success" role="alert">          
+        </div>
+        <div id="resultFailure" class="hide alert alert-danger" role="alert">
+        </div>
+
+    </div>
+    
+    <div class="modal-footer">
+        <button class="btn btn-primary" data-bind="click: $parent.executeFunction">Execute</button>
+        <button class="btn" data-dismiss="modal" aria-hidden="true">Cancel</button>
+    </div>
+
+</div>
+
+
+</body>
+</html>
